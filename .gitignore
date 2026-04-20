@@ -1,0 +1,8 @@
+build/
+*.a
+*.o
+*.d
+*.elf
+*.bin
+*.hex
+lib/libDaisy/build/

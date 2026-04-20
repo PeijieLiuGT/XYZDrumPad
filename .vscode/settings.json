@@ -1,0 +1,13 @@
+{
+    "cmake.generator": "Ninja",
+    "cmake.configureArgs": [
+        "-DTOOLCHAIN_DIR=C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/14.2 rel1/bin",
+        "-DCMAKE_C_COMPILER=C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/14.2 rel1/bin/arm-none-eabi-gcc.exe",
+        "-DCMAKE_CXX_COMPILER=C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/14.2 rel1/bin/arm-none-eabi-g++.exe",
+        "-DCMAKE_ASM_COMPILER=C:/Program Files (x86)/Arm GNU Toolchain arm-none-eabi/14.2 rel1/bin/arm-none-eabi-gcc.exe",
+        "-DCMAKE_TRY_COMPILE_PLATFORM_VARIABLES=CMAKE_C_COMPILER;CMAKE_CXX_COMPILER;CMAKE_ASM_COMPILER",
+        "-DCMAKE_MAKE_PROGRAM=C:/Users/liupe/scoop/shims/ninja.exe"
+    ],
+    "cmake.buildDirectory": "${workspaceFolder}/build",
+    "python-envs.defaultEnvManager": "ms-python.python:system"
+}
