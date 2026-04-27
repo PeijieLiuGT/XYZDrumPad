@@ -4,5 +4,6 @@ build/
 *.d
 *.elf
 *.bin
+!util/*.bin
 *.hex
 lib/libDaisy/build/
