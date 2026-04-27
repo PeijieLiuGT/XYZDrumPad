@@ -6,4 +6,5 @@ build/
 *.bin
 !util/*.bin
 *.hex
+*.pptx
 lib/libDaisy/build/
