@@ -7,18 +7,22 @@ import pygame
 
 # Expected serial line formats (one per line):
 #   void
-#   (x, y, velocity)
+#   x,y,velocity            (current firmware: drumpad_1_copy_*.ino)
+#   (x, y, velocity)        (also accepted, parens optional)
 # x, y, velocity may be int or float. Whitespace is tolerated.
 HIT_RE = re.compile(
-    r"\(\s*([-+]?\d+(?:\.\d+)?)\s*,\s*([-+]?\d+(?:\.\d+)?)\s*,\s*([-+]?\d+(?:\.\d+)?)\s*\)"
+    r"\(?\s*([-+]?\d+(?:\.\d+)?)\s*,\s*"
+    r"([-+]?\d+(?:\.\d+)?)\s*,\s*"
+    r"([-+]?\d+(?:\.\d+)?)\s*\)?"
 )
 VOID_RE = re.compile(r"\bvoid\b", re.IGNORECASE)
 
-# Coordinate space of the physical pad (matches the 3x3 drive/data grid in
-# drum_pad_vip.ino: 3 cells per axis -> indices 0..2, possibly fractional if
-# the firmware sends centroid/interpolated coords).
-X_MIN, X_MAX = 0.0, 2.0
-Y_MIN, Y_MAX = 0.0, 2.0
+# Coordinate space of the physical pad. The firmware
+# (drumpad_1_copy_*.ino, findWeightedPressLocation) maps the 3x3 grid into
+# 0..126 on both axes via (c * 126) / (numCols - 1), and emits velocity as
+# MIDI-style 1..127.
+X_MIN, X_MAX = 0.0, 126.0
+Y_MIN, Y_MAX = 0.0, 126.0
 VEL_MAX = 127.0
 
 # Trail of past hits to draw (ring buffer)
@@ -174,7 +178,15 @@ def main():
         idx = 0
 
     port_name = ports[idx].device
-    ser = open_port(port_name, 115200)
+    try:
+        ser = open_port(port_name, 115200)
+    except serial.SerialException as e:
+        print(f"Could not open {port_name}: {e}")
+        print("Hint: another program is probably holding the port.")
+        print("  - Close the Arduino IDE Serial Monitor (or any other terminal on this COM port)")
+        print("  - Make sure no previous instance of plot_gui.py is still running")
+        print("  - Unplug/replug the Daisy if it remains stuck")
+        sys.exit(1)
     print(f"Opened {port_name} @ 115200")
 
     pygame.init()
